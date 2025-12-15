@@ -1,13 +1,50 @@
+import Navbar from "~/components/Navbar";
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { resumes } from "constants/index.js";
+import { usePuterStore } from "~/lib/puter";
+import ResumeCard from "~/components/ResumeCard";
+import { useNavigate } from "react-router";
+import { useEffect as reactUseEffect } from "react";
+
+
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Rapid Matcher" },
+    { name: "description", content: "Smart Reviews for your dream job!" },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  const { auth } = usePuterStore();
+  const navigate = useNavigate();
+
+  reactUseEffect(() => {
+    if (auth.isAuthenticated) navigate('/auth?next=/');
+  }, [auth.isAuthenticated, navigate]);
+
+
+
+  return <main className="bg-[url('/images/bg-main.svg')] bg-cover ">
+    <Navbar />
+     <section className="main-section">
+      <div className="page-heading py-16">
+        <h1>Track Your Application & Resume Ratings</h1>
+        <h2>Review your submission and check AI powered feedback.</h2>
+      </div>
+
+      {resumes.length > 0 && (
+        <div className="resumes-section">
+          {resumes.map((resume) => (
+            <ResumeCard key={resume.id} resume = {resume} />
+          ))}
+
+        </div>
+      )}
+     </section>
+    </main>;
+
+
 }
+// (No local stubs) Use `usePuterStore` and React's `useEffect` from imports above.
+
