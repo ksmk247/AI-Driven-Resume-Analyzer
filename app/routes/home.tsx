@@ -20,8 +20,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   reactUseEffect(() => {
-    if (auth.isAuthenticated) navigate('/auth?next=/');
-  }, [auth.isAuthenticated, navigate]);
+    if (!auth.isAuthenticated) navigate('/auth?next=/');
+  }, [auth.isAuthenticated]);
 
 
 
